@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useReducer } from 'react';
+
+import ACTION from './actions/index';
+import TodoList from './components/TodoList';
+import { reducer, initialState } from './reducers/reducer';
+
+let currentState = reducer(initialState, {type: null});
+
+const todos = [{
+  item: 'Learn about reducers',
+  completed: false,
+  id: 3892987589
+}];
 
 function App() {
+
+  const [state, dispatch] = useReducer(reducer, todos);
+  console.log(state);
+
+  const handleCompled = id => {
+    const item = state.filter(x => x.id === id);
+    dispatch(reducer(item, ACTION.TOGGLE_COMPLETED))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h2>To Do List</h2>
+      <TodoList currentState={todos} handleCompled={handleCompled}/>
+      <input type='text'/>
+      <button>+</button>
     </div>
   );
 }

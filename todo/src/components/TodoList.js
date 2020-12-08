@@ -4,7 +4,12 @@ import TodoItem from './TodoItem';
 const TodoList = props => {
     return (
         <ul>
-            {props.currentState.map(el => <TodoItem item={el} key={el.id}/>)}
+            {props.todos.map(item => 
+            <TodoItem 
+                item={item} 
+                key={item.id} 
+                handleToggleCompleted={props.handleToggleCompleted}
+            />)}
         </ul>
     )
 }

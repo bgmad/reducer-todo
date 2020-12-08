@@ -1,33 +1,35 @@
 import React, { useReducer } from 'react';
-
-import ACTION from './actions/index';
 import TodoList from './components/TodoList';
+import Form from './components/Form';
+
+import { addTodo, toggleCompleted, clearCompleted, addCompleted } from './actions/index';
 import { reducer, initialState } from './reducers/reducer';
-
-let currentState = reducer(initialState, {type: null});
-
-const todos = [{
-  item: 'Learn about reducers',
-  completed: false,
-  id: 3892987589
-}];
 
 function App() {
 
-  const [state, dispatch] = useReducer(reducer, todos);
-  console.log(state);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const handleCompled = id => {
-    const item = state.filter(x => x.id === id);
-    dispatch(reducer(item, ACTION.TOGGLE_COMPLETED))
+  const handleAddItem = itemName => {
+    dispatch(addTodo(itemName));
   }
-
+  const handleToggleCompleted = id => {
+    dispatch(toggleCompleted(id));
+  }
+  const handleClearCompleted = () => {
+    dispatch(addCompleted());
+    dispatch(clearCompleted());
+  }
+  
+  console.log(state);
   return (
     <div>
       <h2>To Do List</h2>
-      <TodoList currentState={todos} handleCompled={handleCompled}/>
-      <input type='text'/>
-      <button>+</button>
+      <TodoList 
+        todos={state.todos} 
+        handleToggleCompleted={handleToggleCompleted}/>
+      <Form 
+        handleAddItem={handleAddItem}
+        handleClearCompleted={handleClearCompleted}/>
     </div>
   );
 }

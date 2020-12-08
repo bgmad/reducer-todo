@@ -2,18 +2,24 @@ import React from 'react';
 
 class TodoItem extends React.Component {
 
-    toggleCompleted(e) {
-        this.props.handleCompleted(this.props.item.id);
+    constructor(props) {
+        super();
+        this.state = props.item;
+    }
+
+    handleToggle = e => {
+        this.props.handleToggleCompleted(this.state.id);
+        this.setState({
+            completed: !this.state.completed
+        })
     }
 
     render() {
         return (
-            <div onClick={this.toggleCompleted}>
-                {!this.props.item.completed ? 
-                    <li id={this.props.item.id}> {this.props.item.item} </li> :
-                    <strike>
-                        <li id={this.props.item.id}> {this.props.item.item} </li> 
-                    </strike>
+            <div onClick={this.handleToggle}>
+                {!this.state.completed ? 
+                    <li id={this.state.id}>{this.state.item}</li> :
+                    <strike><li id={this.state.id}>{this.state.item}</li></strike>
                 }
             </div>
         )
